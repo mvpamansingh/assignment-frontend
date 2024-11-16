@@ -1,6 +1,8 @@
 package com.example.assignment_client.data.remote
 
 import com.example.assignment_client.domain.models.CreateProductResponse
+import com.example.assignment_client.domain.models.DeleteProductRequest
+import com.example.assignment_client.domain.models.DeleteProductResponse
 import com.example.assignment_client.domain.models.GetAllProductsRequest
 import com.example.assignment_client.domain.models.GetProductRequest
 import com.example.assignment_client.domain.models.Product
@@ -56,4 +58,9 @@ interface AppApis {
         @Part("dealer") dealer: RequestBody?,
         @Part carImages: List<MultipartBody.Part>
     ): Response<CreateProductResponse>
+
+    @POST("deleteProductById")
+    suspend fun deleteProduct(
+        @Body request: DeleteProductRequest
+    ): Response<DeleteProductResponse>
 }

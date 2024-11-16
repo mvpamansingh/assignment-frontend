@@ -15,6 +15,8 @@ import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 import android.content.Context
+import com.example.assignment_client.domain.models.DeleteProductRequest
+import com.example.assignment_client.domain.models.DeleteProductResponse
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.RequestBody
@@ -138,6 +140,23 @@ class ApiRepositoryImpl(
                 emit(Result.success(response.body()!!))
             } else {
                 emit(Result.failure(Exception("Failed to create product: ${response.errorBody()?.string()}")))
+            }
+        } catch (e: Exception) {
+            emit(Result.failure(e))
+        }
+    }
+
+    override suspend fun deleteProduct(
+        productId: String,
+        userId: String
+    ): Flow<Result<DeleteProductResponse>> = flow {
+        try {
+            val request = DeleteProductRequest(productId, userId)
+            val response = appApi.deleteProduct(request)
+            if (response.isSuccessful && response.body() != null) {
+                emit(Result.success(response.body()!!))
+            } else {
+                emit(Result.failure(Exception("Failed to delete product: ${response.errorBody()?.string()}")))
             }
         } catch (e: Exception) {
             emit(Result.failure(e))

@@ -41,10 +41,10 @@ class MainActivity : ComponentActivity() {
 //
 //                    }
                    // SignInScreen() {  }
-                    //AllProductsScreen(userId =  "6738162a7f5869f85489ca2e")
-                    CreateProductScreen() {
+                    AllProductsScreen(userId =  "6738162a7f5869f85489ca2e")
+                   // CreateProductScreen() {
 
-                    }
+                  //  }
                 }
             }
         }

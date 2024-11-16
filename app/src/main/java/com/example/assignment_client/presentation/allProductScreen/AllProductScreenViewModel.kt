@@ -36,4 +36,18 @@ class AllProductsViewModel(
             }
         }
     }
+
+    fun deleteProduct(productId: String, userId: String) {
+        viewModelScope.launch {
+            repository.deleteProduct(productId, userId)
+                .collect { result ->
+                    result.onSuccess {
+                        // Refresh the products list after successful deletion
+                        onEvent(AllProductsEvent.LoadProducts(userId))
+                    }.onFailure { error ->
+                        _state.value = _state.value.copy(error = error.message)
+                    }
+                }
+        }
+    }
 }

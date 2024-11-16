@@ -2,6 +2,7 @@ package com.example.assignment_client.domain.repository
 
 import android.net.Uri
 import com.example.assignment_client.domain.models.CreateProductResponse
+import com.example.assignment_client.domain.models.DeleteProductResponse
 import com.example.assignment_client.domain.models.Product
 import com.example.assignment_client.domain.models.SignInResponse
 import com.example.assignment_client.domain.models.SignUpResponse
@@ -31,4 +32,6 @@ interface ApiRepository {
         dealer: String?,
         images: List<Uri>
     ): Flow<Result<CreateProductResponse>>
+
+    suspend fun deleteProduct(productId: String, userId: String): Flow<Result<DeleteProductResponse>>
 }
