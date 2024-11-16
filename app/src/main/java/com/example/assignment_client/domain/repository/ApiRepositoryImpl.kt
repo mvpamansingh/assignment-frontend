@@ -1,7 +1,9 @@
 package com.example.assignment_client.domain.repository
 
+import android.net.Uri
 import android.util.Log
 import com.example.assignment_client.data.remote.AppApis
+import com.example.assignment_client.domain.models.CreateProductResponse
 import com.example.assignment_client.domain.models.GetAllProductsRequest
 import com.example.assignment_client.domain.models.GetProductRequest
 import com.example.assignment_client.domain.models.Product
@@ -9,19 +11,22 @@ import com.example.assignment_client.domain.models.SignInRequest
 import com.example.assignment_client.domain.models.SignInResponse
 import com.example.assignment_client.domain.models.SignUpRequest
 import com.example.assignment_client.domain.models.SignUpResponse
+import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
-
+import android.content.Context
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.RequestBody
 
 
 import kotlinx.coroutines.flow.flow
-
-
-
+import okhttp3.MultipartBody
 
 
 class ApiRepositoryImpl(
-    private val appApi: AppApis
+    private val appApi: AppApis,
+    private val context: Context
 ) : ApiRepository {
 
     override suspend fun getProductById(productId: String, userId: String): Flow<Result<Product>> = flow {
@@ -83,6 +88,56 @@ class ApiRepositoryImpl(
                 emit(Result.success(response.body()!!))
             } else {
                 emit(Result.failure(Exception("Failed to get products: ${response.errorBody()?.string()}")))
+            }
+        } catch (e: Exception) {
+            emit(Result.failure(e))
+        }
+    }
+
+    override suspend fun createProduct(
+        createdBy: String,
+        title: String,
+        description: String,
+        tags: List<String>,
+        company: String,
+        carType: String?,
+        dealer: String?,
+        images: List<Uri>): Flow<Result<CreateProductResponse>> = flow {
+        try {
+            val createdByBody = createdBy.toRequestBody("text/plain".toMediaType())
+            val titleBody = title.toRequestBody("text/plain".toMediaType())
+            val descriptionBody = description.toRequestBody("text/plain".toMediaType())
+            val tagsBody = Gson().toJson(tags).toRequestBody("text/plain".toMediaType())
+            val companyBody = company.toRequestBody("text/plain".toMediaType())
+            val carTypeBody = carType?.toRequestBody("text/plain".toMediaType())
+            val dealerBody = dealer?.toRequestBody("text/plain".toMediaType())
+
+            val imageParts = images.map { uri ->
+                val stream = context.contentResolver.openInputStream(uri)
+                val mimeType = context.contentResolver.getType(uri) ?: "image/jpeg"
+                val request = stream?.readBytes()?.toRequestBody(mimeType.toMediaType())
+                MultipartBody.Part.createFormData(
+                    "carImages",
+                    "image_${System.currentTimeMillis()}.${mimeType.substringAfter("/")}",
+                    request!!
+                )
+            }
+
+            val response = appApi.createProduct(
+                createdByBody,
+                titleBody,
+                descriptionBody,
+                tagsBody,
+                companyBody,
+                carTypeBody,
+                dealerBody,
+                imageParts
+            )
+
+            if (response.isSuccessful && response.body() != null) {
+                emit(Result.success(response.body()!!))
+            } else {
+                emit(Result.failure(Exception("Failed to create product: ${response.errorBody()?.string()}")))
             }
         } catch (e: Exception) {
             emit(Result.failure(e))

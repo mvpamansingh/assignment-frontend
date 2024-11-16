@@ -15,6 +15,7 @@ import com.example.assignment_client.presentation.ProductViewModel
 import com.example.assignment_client.presentation.allProductScreen.AllProductsScreen
 import com.example.assignment_client.presentation.auth.signin.SignInScreen
 import com.example.assignment_client.presentation.auth.signup.SignUpScreen
+import com.example.assignment_client.presentation.createProducts.CreateProductScreen
 import com.example.assignment_client.ui.theme.AssignmentclientTheme
 import org.koin.androidx.compose.koinViewModel
 
@@ -40,7 +41,10 @@ class MainActivity : ComponentActivity() {
 //
 //                    }
                    // SignInScreen() {  }
-                    AllProductsScreen(userId =  "6738162a7f5869f85489ca2e")
+                    //AllProductsScreen(userId =  "6738162a7f5869f85489ca2e")
+                    CreateProductScreen() {
+
+                    }
                 }
             }
         }

@@ -1,5 +1,7 @@
 package com.example.assignment_client.domain.repository
 
+import android.net.Uri
+import com.example.assignment_client.domain.models.CreateProductResponse
 import com.example.assignment_client.domain.models.Product
 import com.example.assignment_client.domain.models.SignInResponse
 import com.example.assignment_client.domain.models.SignUpResponse
@@ -19,5 +21,14 @@ interface ApiRepository {
     suspend fun getAllProducts(userId: String): Flow<Result<List<Product>>>
 
 
-
+    suspend fun createProduct(
+        createdBy: String,
+        title: String,
+        description: String,
+        tags: List<String>,
+        company: String,
+        carType: String?,
+        dealer: String?,
+        images: List<Uri>
+    ): Flow<Result<CreateProductResponse>>
 }

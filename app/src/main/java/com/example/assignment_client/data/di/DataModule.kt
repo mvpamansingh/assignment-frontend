@@ -1,9 +1,11 @@
 package com.example.assignment_client.data.di
 
+import android.content.Context
 import com.example.assignment_client.data.remote.AppApis
 import com.example.assignment_client.domain.repository.ApiRepository
 import com.example.assignment_client.domain.repository.ApiRepositoryImpl
 import okhttp3.OkHttpClient
+import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -26,8 +28,8 @@ fun provideChatApi(): AppApis{
 }
 
 
-fun provideApiRepository(chatApi: AppApis): ApiRepository {
-    return ApiRepositoryImpl(chatApi)
+fun provideApiRepository(chatApi: AppApis, context: Context): ApiRepository {
+    return ApiRepositoryImpl(chatApi,context )
 }
 
 
@@ -41,7 +43,7 @@ val dataModule = module {
     }
 
     single{
-        provideApiRepository(get())
+        provideApiRepository(get(), context = androidContext())
     }
 }
 
