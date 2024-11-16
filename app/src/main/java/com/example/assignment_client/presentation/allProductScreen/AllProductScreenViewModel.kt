@@ -20,6 +20,10 @@ class AllProductsViewModel(
             is AllProductsEvent.LoadProducts -> {
                 loadProducts(event.userId)
             }
+
+            is AllProductsEvent.RefreshProducts -> {
+                loadProducts(event.userId)
+            }
         }
     }
 

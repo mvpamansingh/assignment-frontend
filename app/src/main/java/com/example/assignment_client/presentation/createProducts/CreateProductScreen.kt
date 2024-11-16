@@ -37,12 +37,13 @@ import com.example.assignment_client.domain.models.Product
 import org.koin.androidx.compose.koinViewModel
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
+import org.koin.core.parameter.parametersOf
 
 
 @Composable
 fun CreateProductScreen(
-    viewModel: CreateProductViewModel = koinViewModel(),
-    onSuccess: () -> Unit,
+    userId:String,
+    viewModel: CreateProductViewModel = koinViewModel(parameters = { parametersOf(userId) }) ,   onSuccess: () -> Unit,
 
 ) {
     val state by viewModel.state.collectAsState()

@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 
 
 class CreateProductViewModel(
-    private val repository: ApiRepository
+    private val repository: ApiRepository, private val userId: String
 ) : ViewModel() {
     private val _state = MutableStateFlow(CreateProductState())
     val state = _state.asStateFlow()
@@ -49,7 +49,7 @@ class CreateProductViewModel(
         viewModelScope.launch {
             _state.value = _state.value.copy(isLoading = true, error = null)
             repository.createProduct(
-                createdBy = "6738162a7f5869f85489ca2e",
+                createdBy = userId,
                 title = _state.value.title,
                 description = _state.value.description,
                 tags = _state.value.tags,

@@ -19,6 +19,7 @@ import com.example.assignment_client.presentation.allProductScreen.AllProductsSc
 import com.example.assignment_client.presentation.auth.signin.SignInScreen
 import com.example.assignment_client.presentation.auth.signup.SignUpScreen
 import com.example.assignment_client.presentation.createProducts.CreateProductScreen
+import com.example.assignment_client.presentation.productDetailScreen.ProductDetailScreen
 import com.example.assignment_client.presentation.updateProductScreen.UpdateProductScreen
 
 @Composable
@@ -94,11 +95,14 @@ fun AppNavigation(
             AllProductsScreen(
                 userId = userPreferences.userId,
                 onProductClick = { productId ->
-                    navController.navigate("${Screen.UpdateProduct.route}/$productId")
+                    navController.navigate("${Screen.ProductDetail.route}/$productId")
                 },
                 onCreateProductClick = {
                     navController.navigate(Screen.CreateProduct.route)
-                }
+                },
+                onEditClick = { productId ->  // Add this handler
+                    navController.navigate("${Screen.UpdateProduct.route}/$productId")
+                },
             )
         }
 
@@ -119,6 +123,23 @@ fun AppNavigation(
         composable(Screen.CreateProduct.route) {
             CreateProductScreen(
                 onSuccess = {
+                    navController.popBackStack()
+                },
+                userId = userPreferences.userId,
+            )
+        }
+
+
+
+        composable(
+            route = "${Screen.ProductDetail.route}/{productId}",
+            arguments = listOf(navArgument("productId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val productId = backStackEntry.arguments?.getString("productId") ?: return@composable
+            ProductDetailScreen(
+                productId = productId,
+                userId = userPreferences.userId,
+                onBackClick = {
                     navController.popBackStack()
                 }
             )
