@@ -45,22 +45,7 @@ fun AppNavigation(
     }
 
     NavHost(navController = navController, startDestination = startDestination) {
-//        composable(Screen.SignIn.route) {
-//            SignInScreen(
-//                onSignInSuccess = { userId ->
-//                    // Store userId and navigate
-//                    LaunchedEffect(Unit) {
-//                        userPreferencesRepository.updateUserId(userId)
-//                        navController.navigate(Screen.AllProducts.route) {
-//                            popUpTo(Screen.SignIn.route) { inclusive = true }
-//                        }
-//                    }
-//                },
-//                onSignUpClick = {
-//                    navController.navigate(Screen.SignUp.route)
-//                }
-//            )
-//        }
+
 
         composable(Screen.SignIn.route) {
             var shouldNavigate by remember { mutableStateOf<String?>(null) }

@@ -1,4 +1,5 @@
 package com.example.assignment_client.presentation.allProductScreen
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -88,7 +89,7 @@ fun ProductCard(product: Product
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(4.dp)
+            .padding(4.dp).clickable { onProductClick(product._id) }
     ) {
         Column(
             modifier = Modifier

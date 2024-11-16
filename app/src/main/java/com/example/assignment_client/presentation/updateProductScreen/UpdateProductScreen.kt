@@ -60,7 +60,7 @@ fun UpdateProductScreen(
 
     LaunchedEffect(state.isSuccess) {
         if (state.isSuccess) {
-           // onSuccess()
+            onSuccess()
         }
     }
 
