@@ -1,6 +1,7 @@
 package com.example.assignment_client.presentation
 
 import android.app.Application
+import com.example.assignment_client.presentation.allProductScreen.AllProductsViewModel
 import com.example.assignment_client.presentation.auth.signin.SignInViewModel
 import com.example.assignment_client.presentation.auth.signup.SignUpViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -15,5 +16,7 @@ val viewModelModule = module {
 
 
     viewModel { SignInViewModel(get()) }
+
+    viewModel { AllProductsViewModel(get()) }
 }
 
