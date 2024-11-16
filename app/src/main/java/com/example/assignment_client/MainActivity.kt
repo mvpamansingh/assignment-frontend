@@ -12,6 +12,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.assignment_client.presentation.ProductScreen
 import com.example.assignment_client.presentation.ProductViewModel
+import com.example.assignment_client.presentation.allProductScreen.AllProductsScreen
+import com.example.assignment_client.presentation.auth.signin.SignInScreen
+import com.example.assignment_client.presentation.auth.signup.SignUpScreen
 import com.example.assignment_client.ui.theme.AssignmentclientTheme
 import org.koin.androidx.compose.koinViewModel
 
@@ -29,9 +32,15 @@ class MainActivity : ComponentActivity() {
 
 
 
-                    val viewModel:ProductViewModel = koinViewModel()
-                    ProductScreen(viewModel = viewModel, productId = "673816857f5869f85489ca32", userId ="6738162a7f5869f85489ca2e" )
+                   // val viewModel:ProductViewModel = koinViewModel()
+                    //ProductScreen(viewModel = viewModel, productId = "673816857f5869f85489ca32", userId ="6738162a7f5869f85489ca2e" )
 
+
+//                    SignUpScreen(){
+//
+//                    }
+                   // SignInScreen() {  }
+                    AllProductsScreen(userId =  "6738162a7f5869f85489ca2e")
                 }
             }
         }

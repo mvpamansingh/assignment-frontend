@@ -16,4 +16,8 @@ interface ApiRepository {
 
     suspend fun signIn(email: String, password: String): Flow<Result<SignInResponse>>
 
+    suspend fun getAllProducts(userId: String): Flow<Result<List<Product>>>
+
+
+
 }

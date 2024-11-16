@@ -1,5 +1,6 @@
 package com.example.assignment_client.data.remote
 
+import com.example.assignment_client.domain.models.GetAllProductsRequest
 import com.example.assignment_client.domain.models.GetProductRequest
 import com.example.assignment_client.domain.models.Product
 import com.example.assignment_client.domain.models.SignInRequest
@@ -31,4 +32,9 @@ interface AppApis {
     suspend fun signIn(
         @Body request: SignInRequest
     ): Response<SignInResponse>
+
+    @POST("getAllProducts")
+    suspend fun getAllProducts(
+        @Body request: GetAllProductsRequest
+    ): Response<List<Product>>
 }
