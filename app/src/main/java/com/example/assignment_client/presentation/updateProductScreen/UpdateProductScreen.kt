@@ -44,7 +44,8 @@ import org.koin.core.parameter.parametersOf
 fun UpdateProductScreen(
     productId: String,
     userId: String,
-    viewModel: UpdateProductViewModel = koinViewModel(parameters = { parametersOf(productId, userId) })
+    viewModel: UpdateProductViewModel = koinViewModel(parameters = { parametersOf(productId, userId) }),
+    onSuccess: () -> Unit,
 ) {
     val state by viewModel.state.collectAsState()
     val launcher = rememberLauncherForActivityResult(

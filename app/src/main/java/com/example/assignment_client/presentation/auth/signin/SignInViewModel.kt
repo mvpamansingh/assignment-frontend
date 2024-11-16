@@ -36,8 +36,13 @@ class SignInViewModel(
                 _state.value.password
             ).collect { result ->
                 _state.value = _state.value.copy(isLoading = false)
-                result.onSuccess {
-                    _state.value = _state.value.copy(isSuccess = true)
+
+                result.onSuccess {resonse->
+                    _state.value = _state.value.copy(
+                        isSuccess = true,      isLoading = false,
+
+                        userId = resonse.userId
+                        )
                 }.onFailure { error ->
                     _state.value = _state.value.copy(error = error.message)
                 }

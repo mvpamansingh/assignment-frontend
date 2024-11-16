@@ -35,12 +35,19 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun AllProductsScreen(
     viewModel: AllProductsViewModel = koinViewModel(),
-    userId: String
+    userId: String,
+    onProductClick: (String) -> Unit,
+    onCreateProductClick: () -> Unit
 ) {
     val state by viewModel.state.collectAsState()
 
-    LaunchedEffect(Unit) {
-        viewModel.onEvent(AllProductsEvent.LoadProducts(userId))
+//    LaunchedEffect(Unit) {
+//        viewModel.onEvent(AllProductsEvent.LoadProducts(userId))
+//    }
+    LaunchedEffect(userId) {  // Changed from Unit to userId
+        if (userId.isNotBlank()) {
+            viewModel.onEvent(AllProductsEvent.LoadProducts(userId))
+        }
     }
 
     Column(
@@ -69,7 +76,7 @@ fun AllProductsScreen(
             items(state.products) { product ->
                 ProductCard(product = product,onDeleteClick = { productId ->
                     viewModel.deleteProduct(productId, userId)
-                })
+                }, onProductClick = { onProductClick(product._id) })
             }
         }
     }
@@ -77,7 +84,7 @@ fun AllProductsScreen(
 
 @Composable
 fun ProductCard(product: Product
-, onDeleteClick: (String) -> Unit) {
+, onDeleteClick: (String) -> Unit, onProductClick: (String) -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()

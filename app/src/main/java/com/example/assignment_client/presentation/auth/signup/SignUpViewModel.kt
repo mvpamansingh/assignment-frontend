@@ -43,8 +43,10 @@ class SignUpViewModel(
             ).collect { result ->
 
                 _state.value = _state.value.copy(isLoading = false)
-                result.onSuccess {
-                    _state.value = _state.value.copy(isSuccess = true)
+                result.onSuccess {reponse->
+                    _state.value = _state.value.copy(isSuccess = true,
+                        userId = reponse.userId,//isSuccess = true,
+                    )
                 }.onFailure { error ->
                     _state.value = _state.value.copy(error = error.message)
                 }

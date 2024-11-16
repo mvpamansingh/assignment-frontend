@@ -42,7 +42,8 @@ import androidx.activity.result.PickVisualMediaRequest
 @Composable
 fun CreateProductScreen(
     viewModel: CreateProductViewModel = koinViewModel(),
-    onSuccess: () -> Unit
+    onSuccess: () -> Unit,
+
 ) {
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current

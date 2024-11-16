@@ -27,13 +27,13 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun SignUpScreen(
     viewModel: SignUpViewModel = koinViewModel(),
-    onSignUpSuccess: () -> Unit
+    onSignUpSuccess: (String) -> Unit
 ) {
     val state by viewModel.state.collectAsState()
 
     LaunchedEffect(state.isSuccess) {
         if (state.isSuccess) {
-            onSignUpSuccess()
+            onSignUpSuccess(state.userId)
         }
     }
 
