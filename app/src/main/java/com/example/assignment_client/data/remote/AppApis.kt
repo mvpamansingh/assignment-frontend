@@ -10,6 +10,7 @@ import com.example.assignment_client.domain.models.SignInRequest
 import com.example.assignment_client.domain.models.SignInResponse
 import com.example.assignment_client.domain.models.SignUpRequest
 import com.example.assignment_client.domain.models.SignUpResponse
+import com.example.assignment_client.domain.models.UpdateProductResponse
 import kotlinx.coroutines.flow.Flow
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -59,8 +60,24 @@ interface AppApis {
         @Part carImages: List<MultipartBody.Part>
     ): Response<CreateProductResponse>
 
+
     @POST("deleteProductById")
     suspend fun deleteProduct(
         @Body request: DeleteProductRequest
     ): Response<DeleteProductResponse>
+
+
+
+    @Multipart
+    @POST("updateProductById")
+    suspend fun updateProduct(
+        @Part("productId") productId: RequestBody,
+        @Part("title") title: RequestBody?,
+        @Part("description") description: RequestBody?,
+        @Part("tags") tags: RequestBody?,
+        @Part("company") company: RequestBody?,
+        @Part("carType") carType: RequestBody?,
+        @Part("dealer") dealer: RequestBody?,
+        @Part carImages: List<MultipartBody.Part>?
+    ): Response<UpdateProductResponse>
 }

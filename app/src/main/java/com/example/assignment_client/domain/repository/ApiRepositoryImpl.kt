@@ -17,6 +17,7 @@ import retrofit2.Response
 import android.content.Context
 import com.example.assignment_client.domain.models.DeleteProductRequest
 import com.example.assignment_client.domain.models.DeleteProductResponse
+import com.example.assignment_client.domain.models.UpdateProductResponse
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.RequestBody
@@ -157,6 +158,61 @@ class ApiRepositoryImpl(
                 emit(Result.success(response.body()!!))
             } else {
                 emit(Result.failure(Exception("Failed to delete product: ${response.errorBody()?.string()}")))
+            }
+        } catch (e: Exception) {
+            emit(Result.failure(e))
+        }
+    }
+
+
+
+
+
+    override suspend fun updateProduct(
+        productId: String,
+        title: String?,
+        description: String?,
+        tags: List<String>?,
+        company: String?,
+        carType: String?,
+        dealer: String?,
+        images: List<Uri>?
+    ): Flow<Result<UpdateProductResponse>> = flow {
+        try {
+            val productIdBody = productId.toRequestBody("text/plain".toMediaType())
+            val titleBody = title?.toRequestBody("text/plain".toMediaType())
+            val descriptionBody = description?.toRequestBody("text/plain".toMediaType())
+            val tagsBody = tags?.let { Gson().toJson(it).toRequestBody("text/plain".toMediaType()) }
+            val companyBody = company?.toRequestBody("text/plain".toMediaType())
+            val carTypeBody = carType?.toRequestBody("text/plain".toMediaType())
+            val dealerBody = dealer?.toRequestBody("text/plain".toMediaType())
+
+            val imageParts = images?.map { uri ->
+                val stream = context.contentResolver.openInputStream(uri)
+                val mimeType = context.contentResolver.getType(uri) ?: "image/jpeg"
+                val request = stream?.readBytes()?.toRequestBody(mimeType.toMediaType())
+                MultipartBody.Part.createFormData(
+                    "carImages",
+                    "image_${System.currentTimeMillis()}.${mimeType.substringAfter("/")}",
+                    request!!
+                )
+            }
+
+            val response = appApi.updateProduct(
+                productIdBody,
+                titleBody,
+                descriptionBody,
+                tagsBody,
+                companyBody,
+                carTypeBody,
+                dealerBody,
+                imageParts
+            )
+
+            if (response.isSuccessful && response.body() != null) {
+                emit(Result.success(response.body()!!))
+            } else {
+                emit(Result.failure(Exception("Failed to update product: ${response.errorBody()?.string()}")))
             }
         } catch (e: Exception) {
             emit(Result.failure(e))
