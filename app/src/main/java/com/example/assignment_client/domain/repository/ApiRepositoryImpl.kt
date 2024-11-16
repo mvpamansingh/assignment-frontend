@@ -1,8 +1,11 @@
 package com.example.assignment_client.domain.repository
 
+import android.util.Log
 import com.example.assignment_client.data.remote.AppApis
 import com.example.assignment_client.domain.models.GetProductRequest
 import com.example.assignment_client.domain.models.Product
+import com.example.assignment_client.domain.models.SignInRequest
+import com.example.assignment_client.domain.models.SignInResponse
 import com.example.assignment_client.domain.models.SignUpRequest
 import com.example.assignment_client.domain.models.SignUpResponse
 import kotlinx.coroutines.flow.Flow
@@ -46,6 +49,24 @@ class ApiRepositoryImpl(
                 emit(Result.success(response.body()!!))
             } else {
                 emit(Result.failure(Exception("Signup failed: ${response.errorBody()?.string()}")))
+            }
+        } catch (e: Exception) {
+            emit(Result.failure(e))
+        }
+    }
+
+    override suspend fun signIn(
+        email: String,
+        password: String
+    ): Flow<Result<SignInResponse>> = flow {
+        try {
+            val request = SignInRequest(email, password)
+            val response = appApi.signIn(request)
+            if (response.isSuccessful && response.body() != null) {
+                Log.d("heloo", "ver")
+                emit(Result.success(response.body()!!))
+            } else {
+                emit(Result.failure(Exception("SignIn failed: ${response.errorBody()?.string()}")))
             }
         } catch (e: Exception) {
             emit(Result.failure(e))

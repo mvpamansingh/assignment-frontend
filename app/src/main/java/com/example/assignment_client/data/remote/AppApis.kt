@@ -2,6 +2,8 @@ package com.example.assignment_client.data.remote
 
 import com.example.assignment_client.domain.models.GetProductRequest
 import com.example.assignment_client.domain.models.Product
+import com.example.assignment_client.domain.models.SignInRequest
+import com.example.assignment_client.domain.models.SignInResponse
 import com.example.assignment_client.domain.models.SignUpRequest
 import com.example.assignment_client.domain.models.SignUpResponse
 import kotlinx.coroutines.flow.Flow
@@ -24,4 +26,9 @@ interface AppApis {
     ): Response<SignUpResponse>
 
 
+
+    @POST("signin")
+    suspend fun signIn(
+        @Body request: SignInRequest
+    ): Response<SignInResponse>
 }
