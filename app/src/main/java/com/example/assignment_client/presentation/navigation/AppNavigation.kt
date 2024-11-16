@@ -87,6 +87,10 @@ fun AppNavigation(
             SignUpScreen(
                 onSignUpSuccess = { userId ->
                     shouldNavigate = userId
+                },
+
+                onBackToSignIn = {
+                    navController.popBackStack()
                 }
             )
         }
